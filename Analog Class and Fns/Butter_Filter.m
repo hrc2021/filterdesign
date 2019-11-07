@@ -15,7 +15,7 @@ classdef Butter_Filter
         poles
     end
     methods
-        function obj = Butter_Filter(varargin)
+        function obj = Butter_Filter(varargin) %(Amax, Amin, wp, ws, type)
             if nargin == 5
                 obj.Amax = varargin{1};
                 obj.Amin = varargin{2};

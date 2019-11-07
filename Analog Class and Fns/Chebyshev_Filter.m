@@ -15,7 +15,7 @@
         b
     end
     methods
-        function obj = Chebyshev_Filter(varargin)
+        function obj = Chebyshev_Filter(varargin) %(Amax, Amin, wp, ws, type)
             if nargin == 5
                 obj.Amax = varargin{1};
                 obj.Amin = varargin{2};
