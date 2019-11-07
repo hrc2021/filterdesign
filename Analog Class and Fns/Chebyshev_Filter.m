@@ -1,4 +1,4 @@
- classdef ChebyshevFilter
+ classdef Chebyshev_Filter
     properties
         w0
         Q
@@ -15,7 +15,7 @@
         b
     end
     methods
-        function obj = ChebyshevFilter(varargin)
+        function obj = Chebyshev_Filter(varargin)
             if nargin == 5
                 obj.Amax = varargin{1};
                 obj.Amin = varargin{2};

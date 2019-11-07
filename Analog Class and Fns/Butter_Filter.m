@@ -1,4 +1,4 @@
-classdef ButterFilter
+classdef Butter_Filter
     %BUTTERFILTER Given arguements this class with develope corispondidng
     %values for w0, Q and poles for a Butterworth filters. Currently give
     % arguements in the form of  (Amax, Amin, wp, ws, "low" or "high")
@@ -15,7 +15,7 @@ classdef ButterFilter
         poles
     end
     methods
-        function obj = ButterFilter(varargin)
+        function obj = Butter_Filter(varargin)
             if nargin == 5
                 obj.Amax = varargin{1};
                 obj.Amin = varargin{2};
