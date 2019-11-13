@@ -11,6 +11,8 @@ classdef BP_Notch_Filter
         base_filter
         Amin
         Amax
+        w0
+        Q
     end
     methods
         function obj = BP_Notch_Filter(Amax, Amin, wp1, wp2, ws1, ws2, type, class)
@@ -26,6 +28,8 @@ classdef BP_Notch_Filter
             obj.bmath = calcB(obj);
             obj.base_filter = calcBaseFilter(obj, obj.Amin, obj.Amax, obj.delta_wp, obj.delta_ws, obj.type, obj.class);
             obj.poles = obj.CF * map(obj);
+            obj.w0 = abs(obj.poles);
+            obj.Q = 1 ./ ( 2.* abs(cos(angle(obj.poles))));
         end
         function w = enforceSym(obj)
             w = obj.w;
