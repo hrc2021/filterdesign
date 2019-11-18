@@ -37,6 +37,11 @@ classdef SallenKey
             end
         end
         
+        function DisplaySpec(obj)
+            for n = 1:lenth(obj.Q)
+                
+            end
+        end
     end
     methods(Static)
         

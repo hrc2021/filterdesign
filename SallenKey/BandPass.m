@@ -14,9 +14,9 @@ classdef BandPass < SallenKey
                 case 4 %Case 1 Filter
                     obj.R = BandPass.CalcReq(obj.w0,obj.C);
                     obj.Rb = BandPass.CalcRb(obj.Q,obj.Ra);
-                    obj.gain = ((2*sqrt(2)).*obj.Q)-1;
+                    obj.gain = ((2.*sqrt(2)).*obj.Q)-1;
                 case 3 %Case 2 Equation
-                    obj.R = SallenKey.CalcR(obj.w0,obj.C);
+                    obj.R = SallenKey.CalcReq(obj.w0,obj.C);
                     [obj.R1, obj.R2] = SallenKey.CalcR1R2(obj.Q,obj.R);
                     obj.gain = 2.*(Q.^2);
                 otherwise
@@ -31,11 +31,8 @@ classdef BandPass < SallenKey
         end
         
         function Rb = CalcRb(Q,Ra)
-            Rb = zeros(1:length(Q));
-            for k = 1:length(Q)
-                ratio = 3-(sqrt(2)/Q(k));
-                Rb(k) = Ra*ratio;
-            end
+                ratio = 3-(sqrt(2)./Q);
+                Rb = Ra.*ratio;
         end
         
     end

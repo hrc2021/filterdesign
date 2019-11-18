@@ -16,9 +16,9 @@ classdef HighPass < SallenKey
                     obj.Rb = SallenKey.CalcRb(obj.Q,obj.Ra);
                     obj.gain = 1 + (obj.Ra / obj.Rb);
                 case 3 %Case 2 Equation
-                    obj.R = SallenKey.CalcR(obj.w0,obj.C);
+                    obj.R = SallenKey.CalcReq(obj.w0,obj.C);
                     [obj.R1, obj.R2] = SallenKey.CalcR1R2(obj.Q,obj.R);
-                    obj.gain = 1;
+                    obj.gain = 1 .* ones(lenth(obj.Q));
                 otherwise
                     disp("You broke it");
             end
