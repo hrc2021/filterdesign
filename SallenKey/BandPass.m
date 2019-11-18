@@ -14,11 +14,11 @@ classdef BandPass < SallenKey
                 case 4 %Case 1 Filter
                     obj.R = BandPass.CalcReq(obj.w0,obj.C);
                     obj.Rb = BandPass.CalcRb(obj.Q,obj.Ra);
-                    obj.gain = ((2.*sqrt(2)).*obj.Q)-1;
+                    obj.Gain = ((2.*sqrt(2)).*obj.Q)-1;
                 case 3 %Case 2 Equation
                     obj.R = SallenKey.CalcReq(obj.w0,obj.C);
                     [obj.R1, obj.R2] = SallenKey.CalcR1R2(obj.Q,obj.R);
-                    obj.gain = 2.*(Q.^2);
+                    obj.Gain = 2.*(Q.^2);
                 otherwise
                     disp("You broke it");
             end
