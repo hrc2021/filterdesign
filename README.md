@@ -35,7 +35,10 @@ type = "Case 1" or "Case 2"
 C = # (Capcitor Value)
 Ra = # (Resistor Value [If need for Case 1's])
 ```
-
+#### View Design Values
+```
+design
+```
 #### Case 1 Low-Pass (Q-Based Gain)
 
 Build Design
