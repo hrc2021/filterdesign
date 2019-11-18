@@ -59,7 +59,7 @@ classdef SallenKey
                         disp(['C: ' num2str(obj.C(n))])
                         disp(['Ra: ' num2str(obj.Ra(n))])
                         disp(['Rb: ' num2str(obj.Rb(n))])
-                        disp(['Gain: ' num2str(obj.Gain(n))])
+                        disp(['Gain: ' num2str(obj.Gain(n)) 'DC'])
                     end
                 end
             else
@@ -77,51 +77,52 @@ classdef SallenKey
                             disp(['R: ' num2str(obj.R(n))])
                             disp(['C1: ' num2str(obj.C1(n))])
                             disp(['C2: ' num2str(obj.C2(n))])
-                            disp(['Gain: ' num2str(obj.Gain(n))])
+                            disp(['Gain: ' num2str(obj.Gain(n)) 'DC'])
                         elseif classtype == 'HighPass'
                             disp(['R1: ' num2str(obj.R1(n))])
                             disp(['R2: ' num2str(obj.R2(n))])
                             disp(['C: ' num2str(obj.C(n))])
-                            disp(['Gain: ' num2str(obj.Gain(n))])
+                            disp(['Gain: ' num2str(obj.Gain(n)) 'DC'])
                         elseif classtype == 'BandPass'
                             disp(['R1: ' num2str(obj.R1(n))])
                             disp(['R2: ' num2str(obj.R2(n))])
                             disp(['C: ' num2str(obj.C(n))])
-                            disp(['Gain: ' num2str(obj.Gain(n))])
+                            disp(['Gain: ' num2str(obj.Gain(n)) 'DC'])
                         end
                     end
                 end
             end
         end
     end
-        methods(Static)
-            
-            function [w0,Q] = Calcw0andQ(poles)
-                %METHOD1 Summary of this method goes here
-                %   Detailed explanation goes here
-                w0 = abs(poles);
-                Q = 1 ./ ( 2.* abs(cos(angle(poles))));
-            end
-            
-            function R = CalcReq(w0,C)
-                R = 1./(w0.*C);
-            end
-            
-            function Rb = CalcRb(Q,Ra)
-                ratio = 2-(1./Q);
-                Rb = Ra .* ratio;
-            end
-            
-            function [R1,R2] = CalcR1R2(Q,R)
-                R2 = 2.*Q.*R;
-                R1(k) = R./(2.*Q);
-            end
-            
-            function [C1,C2] = CalcC1C2(Q,C)
-                C2 = 2.*Q.*C;
-                C1(k) = C./(2.*Q);
-            end
-            
+    methods(Static)
+        
+        function [w0,Q] = Calcw0andQ(poles)
+            %METHOD1 Summary of this method goes here
+            %   Detailed explanation goes here
+            w0 = abs(poles);
+            Q = 1 ./ ( 2.* abs(cos(angle(poles))));
         end
+        
+        function R = CalcReq(w0,C)
+            R = 1./(w0.*C);
+        end
+        
+        function Rb = CalcRb(Q,Ra)
+            ratio = 2-(1./Q);
+            Rb = Ra .* ratio;
+        end
+        
+        function [R1,R2] = CalcR1R2(Q,R)
+            R2 = 2.*Q.*R;
+            R1(k) = R./(2.*Q);
+        end
+        
+        function [C1,C2] = CalcC1C2(Q,C)
+            C2 = 2.*Q.*C;
+            C1(k) = C./(2.*Q);
+        end
+        
     end
-    
+end
+
+
