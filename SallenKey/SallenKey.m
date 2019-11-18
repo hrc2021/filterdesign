@@ -23,7 +23,7 @@ classdef SallenKey
         function obj = SallenKey(poles,type)
             %UNTITLED2 Construct an instance of this class
             %   Detailed explanation goes here
-            obj.poles = poles;
+            obj.poles = poles(imag(poles) > 1e-13);
             obj.type = type;
             [obj.w0,obj.Q] = Calcw0andQ(obj.poles);
         end
