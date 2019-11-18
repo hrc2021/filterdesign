@@ -8,17 +8,14 @@ classdef BandPass < SallenKey
             %   Case1 = BandPass(poles,type,C,Ra)
             %   Case2 = BandPass(poles,type,C)
             
-            obj = obj@SallenKey(varargin{1}, varargin{2});
+            obj = obj@SallenKey(varargin);
             
             switch nargin
                 case 4 %Case 1 Filter
-                    obj.C = varargin{3};
-                    obj.Ra = varargin{4};
                     obj.R = BandPass.CalcReq(obj.w0,obj.C);
                     obj.Rb = BandPass.CalcRb(obj.Q,obj.Ra);
                     obj.gain = ((2*sqrt(2)).*obj.Q)-1;
                 case 3 %Case 2 Equation
-                    obj.C = varargin{3};
                     obj.R = SallenKey.CalcR(obj.w0,obj.C);
                     [obj.R1, obj.R2] = SallenKey.CalcR1R2(obj.Q,obj.R);
                     obj.gain = 2.*(Q.^2);

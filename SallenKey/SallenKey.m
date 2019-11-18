@@ -20,12 +20,21 @@ classdef SallenKey
     
     methods
         
-        function obj = SallenKey(poles,type)
+        function obj = SallenKey(varargin)
             %UNTITLED2 Construct an instance of this class
             %   Detailed explanation goes here
             obj.poles = poles(imag(poles) > 1e-13);
             obj.type = type;
             [obj.w0,obj.Q] = Calcw0andQ(obj.poles);
+            switch nargin
+                case 4 %Case 1 Filter
+                    obj.C = varargin{3} .* ones(lenth(obj.Q));
+                    obj.Ra = varargin{4} .* ones(lenth(obj.Q));
+                case 3 %Case 2 Equation
+                    obj.C = varargin{3} .* ones(lenth(obj.Q));
+                otherwise
+                    disp("You broke it");
+            end
         end
         
     end
@@ -43,29 +52,18 @@ classdef SallenKey
         end
         
         function Rb = CalcRb(Q,Ra)
-            Rb = zeros(1:length(Q));
-            for k = 1:length(Q)
-                ratio = 2-(1/Q(k));
-                Rb(k) = Ra*ratio;
-            end
+            ratio = 2-(1./Q);
+            Rb = Ra .* ratio;
         end
         
         function [R1,R2] = CalcR1R2(Q,R)
-            R1 = zeros(1:length(Q));
-            R2 = zeros(1:length(Q));
-            for k = 1:length(obj.Q)
-                R2(k) = 2*Q(k)*R;
-                R1(k) = R / (2*Q(k));
-            end
+                R2 = 2.*Q.*R;
+                R1(k) = R./(2.*Q);
         end
         
         function [C1,C2] = CalcC1C2(Q,C)
-            C1 = zeros(1:length(Q));
-            C2 = zeros(1:length(Q));
-            for k = 1:length(Q)
-                C2(k) = 2*Q(k)*C;
-                C1(k) = C / (2*Q(k));
-            end
+                C2 = 2.*Q.*C;
+                C1(k) = C./(2.*Q);
         end
         
     end
