@@ -32,8 +32,9 @@ classdef (Abstract) Filter
             phase = ones(1000,length(obj.w0));
             phasedeg = ones(1000,length(obj.w0));
             totalresp = ones(1000,1);
-            fd = log10(obj.CF - obj.CF/1.111);
-            ld = log10(obj.CF + obj.CF/1.111);
+            fcf = log10(obj.CF);
+            fd = fcf  - 1;
+            ld = fcf + 1;
             s = logspace(fd,ld,1000);
             for n = 1:length(obj.w0)
                 w0n = obj.w0(n);
@@ -56,14 +57,14 @@ classdef (Abstract) Filter
                     a = 0;
                 end
                 Hs(:,n) = freqs(b,a,s);
-                mag(:,n) = abs(Hs(:,n));
+                mag(:,n) = 20* log10( abs(Hs(:,n)));
                 phase(:,n) = angle(Hs(:,n));
                 phasedeg(:,n) = phase(:,n).*180./pi;
                 
                 totalresp = Hs(:,n) .* totalresp;
             end
             
-            totalmag = abs(totalresp);
+            totalmag = 20 * log10( abs(totalresp));
             totalphase = angle(totalresp);
             totalphasedeg = totalphase.*180./pi;
             
@@ -76,6 +77,7 @@ classdef (Abstract) Filter
             title('Magnitude Response')
             xlabel('Freq (rad/sec)')
             ylabel('Magnitude')
+            set(gca, 'XScale', 'log')
             grid on
             hold off
             
@@ -88,6 +90,7 @@ classdef (Abstract) Filter
             title('Angle Response')
             xlabel('Freq (rad/sec)')
             ylabel('Ang (deg)')
+            set(gca, 'XScale', 'log')
             grid on
             hold off
             

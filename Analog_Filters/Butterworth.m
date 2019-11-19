@@ -35,7 +35,7 @@ classdef Butterworth < Filter
             end
             obj.poles = obj.poles(imag(obj.poles) > -1.0e-13);
             obj.w0 = abs(obj.poles);
-            obj.Q = 1 ./ ( 2.* abs(cos(angle(obj.poles))));
+            obj.Q = 1 ./ ( 2.* abs(cos(pi - angle(obj.poles))));
             
         end
         
