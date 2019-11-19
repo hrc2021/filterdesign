@@ -33,7 +33,7 @@ classdef Butterworth < Filter
                 obj.poles = obj.CF.*Filter.Map(obj.poles, obj.w, obj.CF);
                 
             end
-            
+            obj.poles = obj.poles(imag(obj.poles) > -1.0e-13);
             obj.w0 = abs(obj.poles);
             obj.Q = 1 ./ ( 2.* abs(cos(angle(obj.poles))));
             
@@ -81,7 +81,7 @@ classdef Butterworth < Filter
         
         function poles = CalcPolesLPHP(order,w0)
             %CalcPolesLPHP Method calc's poles for LP/HP
-            %   Assuming w0 = 1
+
             n = order;
             k = 0:(2*n - 1);
             if (mod(n,2) == 0)
