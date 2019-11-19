@@ -1,4 +1,4 @@
-classdef (Abstract) Filter 
+classdef (Abstract) Filter
     %FILTER Summary of this class goes here
     %   Detailed explanation goes here
     
@@ -25,6 +25,70 @@ classdef (Abstract) Filter
             obj.type = type;
         end
         
+        function Graph(obj)
+            
+            Hs = ones(1000,length(obj.w0));
+            mag = ones(1000,length(obj.w0));
+            phase = ones(1000,length(obj.w0));
+            phasedeg = ones(1000,length(obj.w0));
+            totalresp = ones(1000,1);
+            fd = log10(obj.CF - obj.CF/1.111);
+            ld = log10(obj.CF + obj.CF/1.111);
+            s = logspace(fd,ld,1000);
+            for n = 1:length(obj.w0)
+                w0n = obj.w0(n);
+                Qn = obj.Q(n);
+                if obj.type == "Low"
+                    b = w0n^2;
+                    a = [1,(w0n/Qn), w0n^2] ;
+                elseif obj.type == "High"
+                    b = [1, 0, 0];
+                    a = [1, (w0n/Qn), w0n^2];
+                elseif obj.type == "Band"
+                    b = [w0n/sqrt(2),0];
+                    a = [1,(w0n/Qn), w0n^2];
+                elseif obj.type == "Notch"
+                    b = [1,0,w0n^2];
+                    a = [1,(w0n/Qn),w0n^2];
+                else
+                    b = 0;
+                    a = 0;
+                end
+                Hs(:,n) = freqs(b,a,s);
+                mag(:,n) = abs(Hs(:,n));
+                phase(:,n) = angle(Hs(:,n));
+                phasedeg(:,n) = phase(:,n).*180./pi;
+                
+                totalresp = Hs(:,n) .* totalresp;
+            end
+            
+            totalmag = abs(totalresp);
+            totalphase = angle(totalresp);
+            totalphasedeg = totalphase.*180./pi;
+
+            figure 
+            hold on
+            for n = 1:length(obj.w0)
+                semilogx(s,mag(:,n));
+            end
+            semilogx(s,totalmag)
+            xlabel('Freq (rad/sec)')
+            ylabel('Magnitude')
+            grid on
+            hold off
+            
+            figure
+            hold on
+            for n = 1:length(obj.w0)
+                semilogx(s,phasedeg(:,n));
+            end
+            semilogx(s,totalphasedeg)
+            xlabel('Freq (rad/sec)')
+            ylabel('Ang (deg)')
+            grid on
+            hold off
+
+        end
     end
     
     methods(Static)
