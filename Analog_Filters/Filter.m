@@ -65,13 +65,14 @@ classdef (Abstract) Filter
             totalmag = abs(totalresp);
             totalphase = angle(totalresp);
             totalphasedeg = totalphase.*180./pi;
-
-            figure 
+            
+            figure
             hold on
             for n = 1:length(obj.w0)
                 semilogx(s,mag(:,n));
             end
             semilogx(s,totalmag)
+            title('Magnitude Response')
             xlabel('Freq (rad/sec)')
             ylabel('Magnitude')
             grid on
@@ -83,11 +84,12 @@ classdef (Abstract) Filter
                 semilogx(s,phasedeg(:,n));
             end
             semilogx(s,totalphasedeg)
+            title('Angle Response')
             xlabel('Freq (rad/sec)')
             ylabel('Ang (deg)')
             grid on
             hold off
-
+            
         end
     end
     
