@@ -38,6 +38,7 @@ classdef (Abstract) Filter
             for n = 1:length(obj.w0)
                 w0n = obj.w0(n);
                 Qn = obj.Q(n);
+                wz = obj.CF;
                 if obj.type == "Low"
                     b = w0n^2;
                     a = [1,(w0n/Qn), w0n^2] ;
@@ -48,7 +49,7 @@ classdef (Abstract) Filter
                     b = [w0n/sqrt(2),0];
                     a = [1,(w0n/Qn), w0n^2];
                 elseif obj.type == "Notch"
-                    b = [1,0,w0n^2];
+                    b = [1,0,wz^2];
                     a = [1,(w0n/Qn),w0n^2];
                 else
                     b = 0;
