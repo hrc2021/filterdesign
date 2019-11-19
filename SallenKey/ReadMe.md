@@ -11,7 +11,7 @@ Ra = # (Resistor Value [If need for Case 1's])
 ```
 #### View Design Values
 ```
-design
+design.DisplaySpec
 ```
 #### Case 1 Low-Pass (Q-Based Gain)
 
