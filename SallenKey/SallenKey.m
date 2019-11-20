@@ -3,6 +3,7 @@ classdef SallenKey
     %   Detailed explanation goes here
     
     properties
+        filter
         poles
         w0
         Q
@@ -24,11 +25,12 @@ classdef SallenKey
             %UNTITLED2 Construct an instance of this class
             %   Detailed explanation goes here
             varargin = varargin{1};
-            poles = varargin{1};
-            obj.poles = poles((imag(poles)) > -1e-13);
+            obj.filter = varargin{1};
+            obj.poles = obj.filter.poles;
             obj.type = varargin{2};
             obj.C = varargin{3} .* ones(1,length(obj.poles));
-            [obj.w0,obj.Q] = SallenKey.Calcw0andQ(obj.poles);
+            obj.w0 = obj.filter.w0;
+            obj.Q = obj.filter.Q;
             switch length(varargin)
                 case 4 %Case 1 Filter
                     obj.Ra = varargin{4} .* ones(1,length(obj.Q));
@@ -59,7 +61,7 @@ classdef SallenKey
                         disp(['C: ' num2str(obj.C(n))])
                         disp(['Ra: ' num2str(obj.Ra(n))])
                         disp(['Rb: ' num2str(obj.Rb(n))])
-                        disp(['Gain: ' num2str(obj.Gain(n)) 'DC'])
+                        disp(['Gain: ' num2str(obj.Gain(n)) ' dB'])
                     end
                 end
             else
@@ -77,17 +79,17 @@ classdef SallenKey
                             disp(['R: ' num2str(obj.R(n))])
                             disp(['C1: ' num2str(obj.C1(n))])
                             disp(['C2: ' num2str(obj.C2(n))])
-                            disp(['Gain: ' num2str(obj.Gain(n)) 'DC'])
+                            disp(['Gain: ' num2str(obj.Gain(n)) ' dB'])
                         elseif classtype == 'HighPass'
                             disp(['R1: ' num2str(obj.R1(n))])
                             disp(['R2: ' num2str(obj.R2(n))])
                             disp(['C: ' num2str(obj.C(n))])
-                            disp(['Gain: ' num2str(obj.Gain(n)) 'DC'])
+                            disp(['Gain: ' num2str(obj.Gain(n)) ' dB'])
                         elseif classtype == 'BandPass'
                             disp(['R1: ' num2str(obj.R1(n))])
                             disp(['R2: ' num2str(obj.R2(n))])
                             disp(['C: ' num2str(obj.C(n))])
-                            disp(['Gain: ' num2str(obj.Gain(n)) 'DC'])
+                            disp(['Gain: ' num2str(obj.Gain(n)) ' dB'])
                         end
                     end
                 end

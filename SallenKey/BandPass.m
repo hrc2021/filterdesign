@@ -7,8 +7,8 @@ classdef BandPass < SallenKey
     methods
         function obj = BandPass(varargin)
             %BandPass Constructs an instance of this class
-            %   Case1 = BandPass(poles,type,C,Ra)
-            %   Case2 = BandPass(poles,type,C)
+            %   Case1 = BandPass(filter,type,C,Ra)
+            %   Case2 = BandPass(filter,type,C)
             
             obj = obj@SallenKey(varargin);
             
@@ -16,11 +16,15 @@ classdef BandPass < SallenKey
                 case 4 %Case 1 Filter
                     obj.R = BandPass.CalcReq(obj.w0,obj.C);
                     obj.Rb = BandPass.CalcRb(obj.Q,obj.Ra);
+                    normalw0 = obj.w0 ./ obj.filter.CF;
                     obj.Gain = ((2.*sqrt(2)).*obj.Q)-1;
+                    obj.Gain = -10.*log10(1+ (obj.Q.^2).*(((1./normalw0) - normalw0).^2)) + 20.*log10( obj.Gain);
                 case 3 %Case 2 Equation
                     obj.R = SallenKey.CalcReq(obj.w0,obj.C);
                     [obj.R1, obj.R2] = SallenKey.CalcR1R2(obj.Q,obj.R);
-                    obj.Gain = 2.*(Q.^2);
+                    normalw0 = obj.w0 ./ obj.filter.CF;                    
+                    obj.Gain = 2.*(obj.Q.^2);
+                    obj.Gain = -10.*log10(1+ (obj.Q.^2).*(((1./normalw0) - normalw0).^2)) + 20.*log10( obj.Gain);
                 otherwise
                     disp("You broke it");
             end
