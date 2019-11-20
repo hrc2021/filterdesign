@@ -1,6 +1,8 @@
 classdef BandPass < SallenKey
     %BandPass Finds Values of LP SallenKey
     %   Detailed explanation goes here
+    properties
+    end
        
     methods
         function obj = BandPass(varargin)

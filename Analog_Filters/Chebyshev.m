@@ -1,7 +1,10 @@
 classdef Chebyshev < Filter
     %Chebyshev_FILTER
     %   Used in Linear Circuit Filter Design
-        
+        properties
+            a
+            b
+        end
     methods
         
         function obj = Chebyshev(Amax, Amin, w, type)
@@ -14,7 +17,9 @@ classdef Chebyshev < Filter
                 
                 obj.order = Chebyshev.CalcOrder(obj.Amax, obj.Amin, obj.w, obj.type);
                 
-                obj.poles = obj.w(1).*Chebyshev.CalcPolesLPHP(obj.Amax, obj.order);
+                [obj.poles,obj.a,obj.b] = Chebyshev.CalcPolesLPHP(obj.Amax, obj.order);
+                
+                obj.poles = obj.w(1) * obj.poles;
                 
             elseif ((type == "Band") || (type == "Notch"))
                 
@@ -24,7 +29,7 @@ classdef Chebyshev < Filter
                 
                 obj.order = Chebyshev.CalcOrder(obj.Amax, obj.Amin, obj.w, obj.type);
                 
-                obj.poles = Chebyshev.CalcPolesLPHP(obj.Amax, obj.order);
+                [obj.poles,~,~] = Chebyshev.CalcPolesLPHP(obj.Amax, obj.order);
                 
                 obj.poles = obj.CF.* Filter.Map(obj.poles, obj.w, obj.CF);
                 
@@ -57,7 +62,7 @@ classdef Chebyshev < Filter
             order = ceil(n);
         end
         
-        function poles = CalcPolesLPHP(Amax,order)
+        function [poles, a, b] = CalcPolesLPHP(Amax,order)
             %CalcPolesLPHP Method calc's poles for LP/HP
             % Theta
             if (mod(order,2) == 0)
