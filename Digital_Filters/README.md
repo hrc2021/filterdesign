@@ -4,7 +4,7 @@
 Define Variables
 ```
 Classifcation = "Butterworth" or "Chebyshev"
-Yype = "Low" or "High" or "Band" or "Notch"
+Type = "Low" or "High" or "Band" or "Notch"
 Amax = #
 Amin = #
 F= [Fpass, Fstop];

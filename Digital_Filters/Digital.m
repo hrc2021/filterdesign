@@ -10,6 +10,7 @@ classdef Digital
         F
         Filter
         zpoles
+        coef
     end
     
     methods
@@ -26,29 +27,21 @@ classdef Digital
                 obj.Filter = Chebyshev(obj.Amax,obj.Amin, obj.F, Type);
             end
             obj.zpoles = Digital.MyBLT(obj.Filter.poles);
+            obj.coef = Digital.CoefCalc(obj.zpoles,obj.Type);
         end
         
         function Display(obj)
             for n = 1:length(obj.zpoles)
                 disp('**********************')
                 disp(['Section # ' num2str(n)])
-                if obj.Type == "Low"
-                    disp('Numerator coefficients 1 2 1')
-                elseif obj.Type == "High"
-                    disp('Numerator coefficients 1 -2 1')
-                elseif obj.Type == "Band"
-                    disp('Numerator coefficients 1 0 -1')
-                elseif obj.Type == "Notch"
-                    disp(['Numerator coefficients 1 ' num2str(-2*cos(2*pi*Digital.Unwarp(obj.filter.CF))) ' 1'])
-                end
-                a = 1;
-                b = -2 * real(obj.zpoles(n));
-                c = abs(obj.zpoles(n));
-                disp(['Denominator coefficients ' num2str(a) ' ' num2str(b) ' ' num2str(c)])
+                disp(['Numerator coefficients ' num2str(obj.coef(1,1,n)) ' ' num2str((obj.coef(1,2,n))) ' ' num2str((obj.coef(1,3,n)))])
+                disp(['Denominator coefficients ' num2str(obj.coef(2,1,n)) ' ' num2str((obj.coef(2,2,n))) ' ' num2str((obj.coef(2,3,n)))])
                 disp('______________________')
                 disp('**********************')
             end
         end
+        
+        
     end
     
     methods(Static)
@@ -64,6 +57,23 @@ classdef Digital
             zpoles=(2+spoles)./(2-spoles);
         end
         
+        function coef = CoefCalc(zpoles,type)
+            coef = ones(2,3,length(zpoles));
+            for n = 1:length(zpoles)
+                if type == "Low"
+                    num = [1 2 1];
+                elseif type == "High"
+                    num = [1 -2 1];
+                elseif type == "Band"
+                    num = [1 0 -1];
+                elseif type == "Notch"
+                    num = [1,-2*cos(2*pi*Digital.Unwarp(obj.Filter.CF)),1];
+                end
+                den = [1,-2 * real(zpoles(n)),abs(zpoles(n))];
+                coef(1,:,n) = num;
+                coef(2,:,n) = den;
+            end
+        end
     end
 end
 
