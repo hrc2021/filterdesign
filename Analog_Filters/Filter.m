@@ -28,7 +28,7 @@ classdef (Abstract) Filter
         function Display(obj)
             for n = 1:length(obj.w0)
                 disp('______________________')
-                disp([class(obj) ' Section'])
+                disp([class(obj) ' Section ' num2str(n)])
                 disp(['     w0  = '  num2str(obj.w0(n)) ' rad/sec'])
                 disp(['     (or w0  = '  num2str(obj.w0(n)./obj.CF) '*(Center Frequency))'])
                 disp(['     Q  = '  num2str(obj.Q(n)) ])

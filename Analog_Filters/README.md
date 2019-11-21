@@ -14,6 +14,10 @@ Then call either filter type.
 filter = Butterworth(Amax, Amin, w, type);
 filter = Chebyshev(Amax, Amin, w, type);
 ```
+Diplay the w0's and Q's with
+```
+filter.Display
+```
 You can see the corresponding values by typing:
 ```
 filter.poles
