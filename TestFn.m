@@ -70,3 +70,5 @@ type = "Notch";
 f8 = Chebyshev(Amax,Amin,w,type);
 f8.w0
 f8.Q
+%% 
+clc
