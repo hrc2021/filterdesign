@@ -27,18 +27,11 @@ classdef (Abstract) Filter
         
         function Display(obj)
             for n = 1:length(obj.w0)
-                disp('______________________')
+                disp('__________________________')
                 disp([class(obj) ' Section'])
-                disp(['     w0  = '  num2str(obj.w0(n)) ' rad/sec'])
-                disp(['     (or w0  = '  num2str(obj.w0(n)./obj.CF) '*(Center Frequency))'])
-                disp(['     Q  = '  num2str(obj.Q(n)) ])
-                disp(['     (or angle  = '  num2str(rad2deg(acos(1./(2*obj.Q(n))))) ' degrees)'])
-                disp(['     Wz  = '  num2str(obj.CF)])
-                disp('______________________')
-                if not(length(obj.w0) == n)
-                    disp('**********************')
-                end
-
+                disp(['     w0  = '  obj.w0(n) ' rad/sec'])
+                disp(['     Q  = '  obj.Q(n) ])
+                disp(['     Wz  = '  obj.CF])
             end
         end
         
