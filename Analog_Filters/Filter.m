@@ -30,15 +30,19 @@ classdef (Abstract) Filter
                 disp('______________________')
                 disp([class(obj) ' Section ' num2str(n)])
                 disp(['     w0  = '  num2str(obj.w0(n)) ' rad/sec'])
-                disp(['     (or w0  = '  num2str(obj.w0(n)./obj.CF) '*(Center Frequency))'])
+                if ((obj.type == "Band") || (obj.type == "Notch"))
+                    disp(['     (or w0  = '  num2str(obj.w0(n)./obj.CF) '*(Center Frequency))'])
+                end
                 disp(['     Q  = '  num2str(obj.Q(n)) ])
                 disp(['     (or angle  = '  num2str(rad2deg(acos(1./(2*obj.Q(n))))) ' degrees)'])
-                disp(['     Wz  = '  num2str(obj.CF)])
+                if ((obj.type == "Band") || (obj.type == "Notch"))
+                    disp(['     Wz  = '  num2str(obj.CF)])
+                end
                 disp('______________________')
                 if not(length(obj.w0) == n)
                     disp('**********************')
                 end
-
+                
             end
         end
         
@@ -49,11 +53,16 @@ classdef (Abstract) Filter
             phase = ones(1000,length(obj.w0));
             phasedeg = ones(1000,length(obj.w0));
             totalresp = ones(1000,1);
-            fcf = log10(obj.CF);
-            fd = fcf  - 1;
-            ld = fcf + 1;
-            s = logspace(fd,ld,1000);
+            
             for n = 1:length(obj.w0)
+                if ((obj.type == "Band") || (obj.type == "Notch"))
+                    fcf = log10(obj.CF);
+                else
+                    fcf = log10((obj.w0(n)));
+                end
+                fd = fcf  - 1;
+                ld = fcf + 1;
+                s = logspace(fd,ld,1000);
                 w0n = obj.w0(n);
                 Qn = obj.Q(n);
                 wz = obj.CF;
