@@ -116,7 +116,7 @@ classdef SallenKey
         
         function [R1,R2] = CalcR1R2(Q,R)
             R2 = 2.*Q.*R;
-            R1(k) = R./(2.*Q);
+            R1 = R./(2.*Q);
         end
         
         function [C1,C2] = CalcC1C2(Q,C)
