@@ -27,7 +27,7 @@ classdef Digital
                 obj.Filter = Chebyshev(obj.Amax,obj.Amin, obj.F, Type);
             end
             obj.zpoles = Digital.MyBLT(obj.Filter.poles);
-            obj.coef = Digital.CoefCalc(obj.zpoles,obj.Type);
+            obj.coef = CoefCalc(obj);
         end
         
         function Display(obj)
@@ -41,6 +41,24 @@ classdef Digital
             end
         end
         
+        function coeff = CoefCalc(obj)
+            coeff = ones(2,3,length(obj.zpoles));
+            for n = 1:length(obj.zpoles)
+                if obj.Type == "Low"
+                    num = [1 2 1];
+                elseif obj.Type == "High"
+                    num = [1 -2 1];
+                elseif obj.Type == "Band"
+                    num = [1 0 -1];
+                elseif obj.Type == "Notch"
+                    num = [1,-2*cos(2*pi*Digital.UnWarp(obj.Filter.CF)),1];
+                end
+                den = [1,-2 * real(obj.zpoles(n)),(abs(obj.zpoles(n))).^2];
+                coeff(1,:,n) = num;
+                coeff(2,:,n) = den;
+            end
+            
+        end
         
     end
     
@@ -57,23 +75,6 @@ classdef Digital
             zpoles=(2+spoles)./(2-spoles);
         end
         
-        function coef = CoefCalc(zpoles,type)
-            coef = ones(2,3,length(zpoles));
-            for n = 1:length(zpoles)
-                if type == "Low"
-                    num = [1 2 1];
-                elseif type == "High"
-                    num = [1 -2 1];
-                elseif type == "Band"
-                    num = [1 0 -1];
-                elseif type == "Notch"
-                    num = [1,-2*cos(2*pi*Digital.Unwarp(obj.Filter.CF)),1];
-                end
-                den = [1,-2 * real(zpoles(n)),abs(zpoles(n))];
-                coef(1,:,n) = num;
-                coef(2,:,n) = den;
-            end
-        end
     end
 end
 

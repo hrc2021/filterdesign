@@ -102,11 +102,8 @@ classdef Chebyshev < Filter
             a = (1/2)*( t1 - t2);
             b = (1/2)*( t1 + t2);
             %Poles
-            poles1 = (-a*cos(theta) + 1j*b*sin(theta)) ;
-            poles2 = (-a*cos(theta) - 1j*b*sin(theta)) ;
-            poles = unique([poles1 poles2]);
+            poles = (-a*cos(theta) + 1j*b*sin(theta)) ;
         end
-        
     end
 end
 
