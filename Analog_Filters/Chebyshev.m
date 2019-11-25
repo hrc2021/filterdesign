@@ -19,6 +19,10 @@ classdef Chebyshev < Filter
                 
                 [obj.poles,obj.a,obj.b] = Chebyshev.CalcPolesLPHP(obj.Amax, obj.order);
                 
+                if type == "High"
+                    obj.poles = 1./obj.poles;
+                end
+                
                 obj.poles = obj.w(1) * obj.poles;
                 
                 obj.poles = obj.poles(imag(obj.poles) > -1.0e-13);
@@ -42,6 +46,9 @@ classdef Chebyshev < Filter
                 end
                 
                 obj.poles = obj.CF.* Filter.Map(obj.poles, obj.w, obj.CF);
+                
+                obj.poles = obj.poles(imag(obj.poles) > -1.0e-13);
+                
                 
                 obj.w0 = abs(obj.poles);
                 
@@ -77,20 +84,15 @@ classdef Chebyshev < Filter
         function [poles, a, b] = CalcPolesLPHP(Amax,order)
             %CalcPolesLPHP Method calc's poles for LP/HP
             % Theta
-            if (mod(order,2) == 0)
-                counter  = order /2;
-                m = zeros(1,counter);
-                for k  = 0:(counter-1)
-                    m(k+1) = k;
-                end
+            if (mod(order,2) == 1)
+                k  = 0: (2*order -1);
+                that = exp(1j*pi*k /order);
             else
-                counter  = (order + 1) /2;
-                m = zeros(1,counter);
-                for k  = 0:(counter-1)
-                    m(k+1) = k;
-                end
+                k = 0:(2*order -1);
+                that = exp((1j.* (2.*k +1) .* pi )./ (2*order));
             end
-            theta = (pi/2) - (((2*m + 1)*pi) / (2*order));
+            that = that(real(that) < 0);
+            theta = pi - angle(that);
             %E
             E = sqrt((10^(Amax/10))-1);
             %A & B
@@ -102,7 +104,7 @@ classdef Chebyshev < Filter
             a = (1/2)*( t1 - t2);
             b = (1/2)*( t1 + t2);
             %Poles
-            poles = (-a*cos(theta) + 1j*b*sin(theta)) ;
+            poles = (-a.*cos(theta) + 1j.*b.*sin(theta)) ;
         end
     end
 end

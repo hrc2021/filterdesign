@@ -62,5 +62,75 @@ w = [1,20,2.5,8] *2*pi*1000;
 type = "Notch";
 f8 = Chebyshev(Amax,Amin,w,type);
 f8.Display;
+%% 10.1
+clc
+Classification = "Butterworth";
+Type = "Low";
+Amax = 3;
+Amin = 25;
+F = [0.1,0.2];
+f9 = Digital(Classification, Type, Amax, Amin, F);
+f9.Display;
 %% 
 clc
+Classification = "Butterworth";
+Type = "High";
+Amax = 3;
+Amin = 25;
+F = [0.2,0.1];
+f10 = Digital(Classification, Type, Amax, Amin, F);
+f10.Display;
+%% 
+clc
+Classification = "Chebyshev";
+Type = "Low";
+Amax = 3;
+Amin = 25;
+F = [0.1,0.2];
+f11 = Digital(Classification, Type, Amax, Amin, F);
+f11.Display;
+%% 
+clc
+Classification = "Chebyshev";
+Type = "High";
+Amax = 3;
+Amin = 25;
+F = [0.2,0.1];
+f12 = Digital(Classification, Type, Amax, Amin, F);
+f12.Display;
+%% 10.2
+clc
+Classification = "Chebyshev";
+Type = "Band";
+Amax = 0.5;
+Amin = 20;
+F = [0.2,0.3,0.15,0.35];
+f13 = Digital(Classification, Type, Amax, Amin, F);
+f13.Display;
+%% 
+clc
+Classification = "Butterworth";
+Type = "Band";
+Amax = 0.5;
+Amin = 20;
+F = [0.2,0.3,0.15,0.35];
+f14 = Digital(Classification, Type, Amax, Amin, F);
+f14.Display;
+%% 
+clc
+Classification = "Chebyshev";
+Type = "Notch";
+Amax = 2;
+Amin = 16;
+F = [0.1,0.25,0.15,0.2];
+f15 = Digital(Classification, Type, Amax, Amin, F);
+f15.Display;
+%% 
+clc
+Classification = "Butterworth";
+Type = "Notch";
+Amax = 2;
+Amin = 16;
+F = [0.1,0.25,0.15,0.2];
+f16 = Digital(Classification, Type, Amax, Amin, F);
+f16.Display;
