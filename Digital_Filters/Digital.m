@@ -65,7 +65,7 @@ classdef Digital
                     elseif obj.Type == "High"
                         num = [1 -1];
                     end
-                    den = [1,-1* real(obj.zpoles(n))];
+                    den = [1,-1*real(obj.zpoles(n))];
                     coeff(1,:,n) = [num 0];
                     coeff(2,:,n) = [den 0];
                     
