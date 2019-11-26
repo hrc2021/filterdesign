@@ -7,7 +7,7 @@ classdef Digital
         Type
         Amax
         Amin
-        F
+        F        
         Filter
         zpoles
         coef
@@ -15,18 +15,28 @@ classdef Digital
     
     methods
         function obj = Digital(Classification, Type, Amax, Amin, F)
+            
+            %Var Set
             obj.Classification = Classification;
             obj.Type = Type;
             obj.Amax = Amax;
             obj.Amin = Amin;
             obj.F = F;
+            
+            %Prewarp
             obj.F = Digital.PreWarp(obj.F);
+            
+            %Get your Poles
             if obj.Classification == "Butterworth"
                 obj.Filter = Butterworth(obj.Amax,obj.Amin, obj.F, Type);
             elseif obj.Classification == "Chebyshev"
                 obj.Filter = Chebyshev(obj.Amax,obj.Amin, obj.F, Type);
             end
+            
+            %Get z-poles
             obj.zpoles = Digital.MyBLT(obj.Filter.poles);
+            
+            %Get Coefficients
             obj.coef = CoefCalc(obj);
         end
         
@@ -34,24 +44,32 @@ classdef Digital
             for n = 1:length(obj.zpoles)
                 disp('**********************')
                 disp(['Section # ' num2str(n)])
-                disp(['Numerator coefficients ' num2str(obj.coef(n,1,1)) ' ' num2str((obj.coef(n,1,2))) ' ' num2str((obj.coef(n,1,3)))])
-                disp(['Denominator coefficients ' num2str(obj.coef(n,2,1)) ' ' num2str((obj.coef(n,2,2))) ' ' num2str((obj.coef(n,2,3)))])
+                disp(['Numerator coefficients ' num2str(obj.coef(1,1,n)) ' ' num2str((obj.coef(1,2,n))) ' ' num2str((obj.coef(1,3,n)))])
+                disp(['Denominator coefficients ' num2str(obj.coef(2,1,n)) ' ' num2str((obj.coef(2,2,n))) ' ' num2str((obj.coef(2,3,n)))])
                 disp('______________________')
                 disp('**********************')
             end
         end
         
         function coeff = CoefCalc(obj)
+            
+            coeff = ones(2,3,length(obj.zpoles));
+            
+            %For all your pole sections
             for n = 1:length(obj.zpoles)
-                if abs(imag(obj.zpoles(n))) < 1e-4
+                
+                %First Order Section
+                if (abs(imag(obj.zpoles(n))) < 1e-4)
                     if obj.Type == "Low"
                         num = [1 1];
                     elseif obj.Type == "High"
                         num = [1 -1];
                     end
                     den = [1,-1* real(obj.zpoles(n))];
-                    coeff(n,1,:) = [num 0 ];
-                    coeff(n,2,:) = [den 0];
+                    coeff(1,:,n) = [num 0];
+                    coeff(2,:,n) = [den 0];
+                    
+                %Second Order Section
                 else
                     if obj.Type == "Low"
                         num = [1 2 1];
@@ -63,8 +81,8 @@ classdef Digital
                         num = [1,-2*cos(2*pi*Digital.UnWarp(obj.Filter.CF)),1];
                     end
                     den = [1,-2 * real(obj.zpoles(n)),(abs(obj.zpoles(n))).^2];
-                    coeff(n,1,:) = num;
-                    coeff(n,2,:) = den;
+                    coeff(1,:,n) = num;
+                    coeff(2,:,n) = den;
                 end
             end
             
