@@ -103,6 +103,12 @@ classdef Digital
             zpoles=(2+spoles)./(2-spoles);
         end
         
+        function realfreq = CalcRealFreq(WarpedFreq,SamplingFreq)
+            % WarpedFreq is typically obj.F
+            % SamplingFreq is Fs
+            realfreq = (WarpedFreq .* SamplingFreq) ./ (2*pi);
+        end
+        
     end
 end
 
