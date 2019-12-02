@@ -1,7 +1,14 @@
 ## Fitler Design 
 This project began as a desing project as part of lab work for Linear Circuits class taught by Professor Hartnett.
+
+At the begining, when you open the folder with all the functions, run the following
+```
+startup.m
+```
+Sometimes it does automaticaly, other times it does not.
+
 Currently the project has the following functionality:
-- Designs Full Filters
+- Designs Full Filters of Analog and Digital
   - Includes Chebyshev, and Butterworth
 - Design SallenKey Specs for the Filters
   - Low, High and Band pass filters
