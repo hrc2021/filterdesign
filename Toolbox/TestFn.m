@@ -133,4 +133,3 @@ Amax = 2;
 Amin = 16;
 F = [0.1,0.25,0.15,0.2];
 f16 = Digital(Classification, Type, Amax, Amin, F);
-f16.Display;
