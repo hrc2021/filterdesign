@@ -24,7 +24,7 @@ classdef Digital
             obj.F = F;
             
             %Prewarp
-            obj.F = Digital.PreWarp(obj.F);
+            obj.F =  Digital.PreWarp(obj.F);
             
             %Get your Poles
             if obj.Classification == "Butterworth"
