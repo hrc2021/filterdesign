@@ -2,6 +2,7 @@ addpath('SallenKey');
 addpath('Analog_Filters');
 addpath('Digital_Filters');
 addpath('Workbox');
-addpath('MusicFilterSubProj');
+addpath('Workbox/MusicFilterSubProj');
+addpath('Workbox/HW9');
 clc
 
