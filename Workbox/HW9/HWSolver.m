@@ -10,9 +10,11 @@ DLCF = Digital(Classification,Type,Amax,Amin,F);
 %Display Coefficients
 DLCF.Display
 
-%Build num and den of H(z)
-num = DLCF.coef(1,:,1);
-den = DLCF.coef(2,:,1);
+%Define num and den of H(z)
+
+
+
+%Build Total Response
 if not(length(DLCF.coef(1,1,:)) == 1)
     for n = 2:length(DLCF.coef(1,1,:))
         num = conv(num,DLCF.coef(1,:,n));
