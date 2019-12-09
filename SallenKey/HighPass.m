@@ -5,8 +5,8 @@ classdef HighPass < SallenKey
     methods
         function obj = HighPass(varargin)
             %HighPass Constructs an instance of this class
-            %   Case1 = HighPass(poles,type,C,Ra)
-            %   Case2 = HighPass(poles,type,C)
+            %   Case1 = HighPass(filterobj,type,C,Ra)
+            %   Case2 = HighPass(filterobj,type,C)
             
             obj = obj@SallenKey(varargin);
             

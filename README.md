@@ -17,5 +17,6 @@ Currently the project has the following functionality:
 The commandline functions can be found in their corrisponding README.md files under each directories folder.
 In addition, these functions can be run out of the root folder, if you run startup.m
 
+If stuck on formating, you can refrence the CheatSheet.mlx for another example set.
 
 
