@@ -1,4 +1,6 @@
 function DigitalPloter(coef,Gain)
+clf
+close all
 
 %Build Total Response
 num = coef(1,:,1);
@@ -19,6 +21,7 @@ title('Pole/Zero Plot')
 %Calcluates Correct Gain
 DesiredGain = dB2DC(Gain);
 gain = (max(abs(freqz(num, den, 1024))));
+disp(['Orignal Gain: ' num2str(gain)])
 k = DesiredGain/gain;
 disp(['K value: ' num2str(k)])
 num=num*k;
