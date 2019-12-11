@@ -1,4 +1,4 @@
-function HWSolver(Classification,Type,DCGain,Amax,Amin,PassBand,StopBand,SamplingFreq)
+function DLCF =  HWSolver(Classification,Type,DCGain,Amax,Amin,PassBand,StopBand,SamplingFreq)
 %Filter Creation
 fs = SamplingFreq;
 fpass = PassBand;
