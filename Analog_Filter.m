@@ -76,7 +76,7 @@ classdef Analog_Filter
         end
         
         function obj = BuildChebyshev(obj)
-            if ((type == "Low") || (type == "High"))
+            if ((obj.Type == "Low") || (obbj.Type == "High"))
                 %Calc Order
                 obj.order = Analog_Filter.CalcOrder(obj.Classification, obj.Type, obj.Amax, obj.Amin, obj.W);
                 %Calc Poles, A, and B
@@ -87,9 +87,7 @@ classdef Analog_Filter
                 end
                 %De-Normalizing
                 obj.poles = obj.W(1) * obj.poles;
-                
-                
-            elseif ((type == "Band") || (type == "Notch"))
+            elseif ((obj.Type == "Band") || (obj.Type == "Notch"))
                 %Enforce Symetry
                 obj.W = Analog_Filter.EnforceSym(obj.Type,obj.W);
                 %Calc CF
@@ -108,6 +106,91 @@ classdef Analog_Filter
         end
         
         function Displayw0andQ(obj)
+            if ((obj.Type == "Low") || (obbj.Type == "High"))
+                Analog_Filter.Display(obj.Classification, objType, obj.w0, obj.Q)
+            elseif ((obj.Type == "Band") || (obj.Type == "Notch"))
+            Analog_Filter.Display(obj.Classification, obj.Type, obj.w0, obj.Q, obj.CF)
+            end
+        end
+        
+        function GraphResponse(obj)
+            %This is just a personal note, I am too lazy to rewrite this as
+            % a static function. Maybe I will get around to it eventually
+            Hs = ones(1000,length(obj.w0));
+            mag = ones(1000,length(obj.w0));
+            phase = ones(1000,length(obj.w0));
+            phasedeg = ones(1000,length(obj.w0));
+            totalresp = ones(1000,1);
+            
+            for n = 1:length(obj.w0)
+                if ((obj.type == "Band") || (obj.type == "Notch"))
+                    fcf = log10(obj.CF);
+                else
+                    fcf = log10((obj.w0(n)));
+                end
+                fd = fcf  - 1;
+                ld = fcf + 1;
+                s = logspace(fd,ld,1000);
+                w0n = obj.w0(n);
+                Qn = obj.Q(n);
+                wz = obj.CF;
+                if obj.type == "Low"
+                    b = w0n^2;
+                    a = [1,(w0n/Qn), w0n^2] ;
+                elseif obj.type == "High"
+                    b = [1, 0, 0];
+                    a = [1, (w0n/Qn), w0n^2];
+                elseif obj.type == "Band"
+                    b = [w0n/sqrt(2),0];
+                    a = [1,(w0n/Qn), w0n^2];
+                elseif obj.type == "Notch"
+                    b = [1,0,wz^2];
+                    a = [1,(w0n/Qn),w0n^2];
+                else
+                    b = 0;
+                    a = 0;
+                end
+                Hs(:,n) = freqs(b,a,s);
+                mag(:,n) = 20* log10( abs(Hs(:,n)));
+                phase(:,n) = angle(Hs(:,n));
+                phasedeg(:,n) = phase(:,n).*180./pi;
+                
+                totalresp = Hs(:,n) .* totalresp;
+            end
+            
+            totalmag = 20 * log10( abs(totalresp));
+            totalphase = angle(totalresp);
+            totalphasedeg = totalphase.*180./pi;
+            
+            disp("Max Response in dB:")
+            disp(max(totalmag))
+            
+            figure
+            hold on
+            for n = 1:length(obj.w0)
+                semilogx(s,mag(:,n));
+            end
+            semilogx(s,totalmag)
+            title('Magnitude Response')
+            xlabel('Freq (rad/sec)')
+            ylabel('Magnitude')
+            set(gca, 'XScale', 'log')
+            grid on
+            hold off
+            
+            figure
+            hold on
+            for n = 1:length(obj.w0)
+                semilogx(s,phasedeg(:,n));
+            end
+            semilogx(s,totalphasedeg)
+            title('Angle Response')
+            xlabel('Freq (rad/sec)')
+            ylabel('Ang (deg)')
+            set(gca, 'XScale', 'log')
+            grid on
+            hold off
+            
         end
         
     end
