@@ -76,7 +76,7 @@ classdef Analog_Filter
         end
         
         function obj = BuildChebyshev(obj)
-            if ((obj.Type == "Low") || (obbj.Type == "High"))
+            if ((type == "Low") || (type == "High"))
                 %Calc Order
                 obj.order = Analog_Filter.CalcOrder(obj.Classification, obj.Type, obj.Amax, obj.Amin, obj.W);
                 %Calc Poles, A, and B
@@ -87,7 +87,9 @@ classdef Analog_Filter
                 end
                 %De-Normalizing
                 obj.poles = obj.W(1) * obj.poles;
-            elseif ((obj.Type == "Band") || (obj.Type == "Notch"))
+                
+                
+            elseif ((type == "Band") || (type == "Notch"))
                 %Enforce Symetry
                 obj.W = Analog_Filter.EnforceSym(obj.Type,obj.W);
                 %Calc CF
@@ -106,11 +108,6 @@ classdef Analog_Filter
         end
         
         function Displayw0andQ(obj)
-            if ((obj.Type == "Low") || (obbj.Type == "High"))
-                Analog_Filter.Display(obj.Classification, objType, obj.w0, obj.Q)
-            elseif ((obj.Type == "Band") || (obj.Type == "Notch"))
-            Analog_Filter.Display(obj.Classification, obj.Type, obj.w0, obj.Q, obj.CF)
-            end
         end
         
     end
